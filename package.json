@@ -6,7 +6,6 @@
   "scripts": {
     "start": "node -r esm ./server",
     "start:watch": "nodemon -r esm -w server ./server ",
-    "build": "run-s clean & run-p \"build:*\"",
     "build:watch": "run-s clean & run-p \"build:*:watch\"",
     "build:js": "babel client -d dist/js",
     "build:js:watch": "npm run build:js -- -w",
