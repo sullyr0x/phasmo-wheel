@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "name": "Candle Only",
+    "summary": "Your are only allowed to carry a candle as a light source",
+    "description": "",
+    "weight": 1.0
+  },
+  {
+    "id": 2,
+    "name": "UV Only",
+    "summary": "Your are only allowed to carry a UV light as a light source",
+    "description": "",
+    "weight": 1.0
+  },
+  {
+    "id": 4,
+    "name": "Left 4 Dead",
+    "summary": "You die",
+    "weight": 1.0
+  },
+  {
+    "id": 8,
+    "name": "Basic Flashlight Only",
+    "summary": "Basic flashlight only",
+    "weight": 4.0
+  },
+  {
+    "id": 16,
+    "name": "Wall Hugger",
+    "summary": "Hug the walls",
+    "weight": 1.0
+  }
+]

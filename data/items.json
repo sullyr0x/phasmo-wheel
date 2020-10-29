@@ -1,0 +1,128 @@
+[
+  {
+    "id": "candle",
+    "name": "Candle",
+    "min": 0,
+    "max": 4
+  },
+  {
+    "id": "flashlight",
+    "name": "Flashlight",
+    "min": 1,
+    "max": 4
+  },
+  {
+    "id": "lighter",
+    "name": "Lighter",
+    "min": 0,
+    "max": 2
+  },
+  {
+    "id": "uv",
+    "name": "UV Light",
+    "min": 1,
+    "max": 2
+  },
+  {
+    "id": "emf",
+    "name": "EMF Reader",
+    "min": 1,
+    "max": 2
+  },
+  {
+    "id": "thermometer",
+    "name": "Therometer",
+    "min": 0,
+    "max": 3
+  },
+  {
+    "id": "box",
+    "name": "Spirit Box",
+    "min": 1,
+    "max": 2
+  },
+  {
+    "id": "video",
+    "name": "Video Camera",
+    "min": 1,
+    "max": 6
+  },
+  {
+    "id": "book",
+    "name": "Ghost Writing Book",
+    "min": 1,
+    "max": 2
+  },
+  {
+    "id": "photo",
+    "name": "Photo Camera",
+    "min": 1,
+    "max": 3
+  },
+  {
+    "id": "crucifix",
+    "name": "Crucifix",
+    "min": 0,
+    "max": 2
+  },
+  {
+    "id": "smudge",
+    "name": "Smudge Stick",
+    "min": 0,
+    "max": 4
+  },
+  {
+    "id": "pills",
+    "name": "Sanity Pills",
+    "min": 0,
+    "max": 4
+  },
+  {
+    "id": "salt",
+    "name": "Salt",
+    "min": 0,
+    "max": 2
+  },
+  {
+    "id": "tripod",
+    "name": "Tripod",
+    "min": 0,
+    "max": 5
+  },
+  {
+    "id": "glowstick",
+    "name": "Glowstick",
+    "min": 0,
+    "max": 2
+  },
+  {
+    "id": "head-camera",
+    "name": "Head Mounted Camera",
+    "min": 0,
+    "max": 4
+  },
+  {
+    "id": "motion",
+    "name": "Motion Sensor",
+    "min": 0,
+    "max": 4
+  },
+  {
+    "id": "sound",
+    "name": "Sound Sensor",
+    "min": 0,
+    "max": 4
+  },
+  {
+    "id": "parabolic",
+    "name": "Parabolic Microphone",
+    "min": 0,
+    "max": 2
+  },
+  {
+    "id": "infrared",
+    "name": "Infrared Light Sensor",
+    "min": 0,
+    "max": 4
+  }
+]

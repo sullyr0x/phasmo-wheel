@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "name": "Back to the Basics",
+    "summary": "Only default gear",
+    "description": "",
+    "weight": 1.0
+  },
+  {
+    "id": 2,
+    "name": "Over and Out",
+    "summary": "Nope",
+    "description": "",
+    "weight": 1.0
+  }
+]

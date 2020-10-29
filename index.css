@@ -1,0 +1,118 @@
+* {
+    box-sizing: content-box;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #EEE;
+}
+
+html {
+    height: 100%;
+}
+
+html, body, phasmo-wheel {
+    display: flex;
+    padding: 0;
+    margin: 0;
+}
+
+body, phasmo-wheel, main {
+    flex: 1;
+}
+
+phasmo-wheel {
+    display: block;
+    background: #363640;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    justify-items: center;
+    height: 100%;
+}
+
+main > h1,
+main > spin-all {
+    flex: 0;
+    text-align: center;
+    margin: 0;
+    padding: .25em;
+    background: #222;
+    font-size: 30px;
+}
+
+main > spin-all {
+    cursor: pointer;
+}
+
+main > spin-all:hover {
+    background: #333;
+}
+
+team-wheel, personal-wheels {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+}
+
+team-wheel {
+    border-bottom: 2px solid #222;
+}
+
+spinner-wheel {
+    display: block;
+}
+
+spinner-panel {
+    flex: 1;
+    flex-direction: column;
+    justify-items: center;
+    display: flex;
+}
+
+spinner-panel input,
+spinner-panel h2 {
+    flex: 1;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    background: none;
+    border: 0;
+    margin: 0;
+    padding: .25em;
+    vertical-align: middle;
+    display: inline-block;
+    height: 100%;
+}
+
+spinner-panel spinner-wheel {
+    flex: 6;
+}
+
+spinner-panel rule {
+    flex: 3;
+    flex-grow: 0;
+}
+
+spinner-panel h3 {
+    text-align: center;
+}
+
+spinner-wheel {
+    margin: 0 auto;
+}
+
+spinner-wheel {
+    display: block;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+spinner-wheel canvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
