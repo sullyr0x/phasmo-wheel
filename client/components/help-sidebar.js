@@ -25,6 +25,10 @@ class ItemSidebar extends BaseElement {
             Check the <span><i class="icon items"></i> Items to Bring</span> tab to see what to bring based on 
             item restrictions from rules.
           </li>
+          <li>
+            The URL updates as things change and going to the same URL will recreate it the same way, so you can
+            share your favorite sets of rules or the results of a spin, or just bookmark your team names.
+          </li>
         </ul>
         <h3>About</h3>
         <ul>
