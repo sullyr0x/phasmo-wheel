@@ -236,31 +236,33 @@ class PhasmoWheel extends BaseElement {
   }
 
   parseUrl() {
-    const { personalRules, teamRules } = this;
+    try {
+      const {personalRules, teamRules} = this;
 
-    if (!personalRules || !teamRules || !document.location.hash) return;
+      if (!personalRules || !teamRules || !document.location.hash) return;
 
-    let [teamRuleId, personalRuleIds, activeTeamIds, activePersonalIds, names]
-      = document.location.hash.slice(1).split('-');
+      let [teamRuleId, personalRuleIds, activeTeamIds, activePersonalIds, names]
+        = document.location.hash.slice(1).split('-');
 
-    teamRuleId = parseInt(teamRuleId);
-    activeTeamIds = activeTeamIds.split('').map(v => Boolean(parseInt(v)));
-    activePersonalIds = activePersonalIds.split('').map(v => Boolean(parseInt(v)));
+      teamRuleId = parseInt(teamRuleId);
+      activeTeamIds = activeTeamIds.split('').map(v => Boolean(parseInt(v)));
+      activePersonalIds = activePersonalIds.split('').map(v => Boolean(parseInt(v)));
 
-    this.currentTeamRule = teamRules.find(({ id }) => teamRuleId === id);
+      this.currentTeamRule = teamRules.find(({id}) => teamRuleId === id);
 
-    this.currentPersonalRules = personalRuleIds.split('|')
-      .map(id => parseInt(id))
-      .map(personalId => personalRules.find(({ id }) => personalId === id));
+      this.currentPersonalRules = personalRuleIds.split('|')
+        .map(id => parseInt(id))
+        .map(personalId => personalRules.find(({id}) => personalId === id));
 
-    this.teamRules = this.teamRules.map((rule, index) => ({ ...rule, active: activeTeamIds[index] }));
+      this.teamRules = this.teamRules.map((rule, index) => ({...rule, active: activeTeamIds[index]}));
 
-    this.personalRules = this.personalRules
-      .map((rule, index) => ({ ...rule, active: activePersonalIds[index] }));
+      this.personalRules = this.personalRules
+        .map((rule, index) => ({...rule, active: activePersonalIds[index]}));
 
-    this.names = names.split('|').map(name => decodeURIComponent(name));
+      this.names = names.split('|').map(name => decodeURIComponent(name));
 
-    this.updateActiveRules();
+      this.updateActiveRules();
+    } catch (_) {} // if we fail to parse, we'll just skip it
   }
 }
 
