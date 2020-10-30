@@ -9,6 +9,9 @@ class ItemSidebar extends BaseElement {
         <h3>Help</h3>
         <ul>
           <li>
+            Click a player name to modify.
+          </li>
+          <li>
             Click a spinner to spin or click Spin All to spin them all at once.
           </li>
           <li>

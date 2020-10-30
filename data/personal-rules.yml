@@ -1,0 +1,118 @@
+- id: 1
+  name: Candle Only
+  summary: A candle is the only light source you may carry
+  reduce:
+    basic: 1
+    strong: 1
+    uv: 1
+- id: 2
+  name: UV Light Only
+  summary: A UV light is the only light source you may carry
+  reduce:
+    basic: 1
+    strong: 1
+    candle: 1
+- id: 3
+  name: Basic Flashlight
+  summary: A basic flashlight is the only light source you may carry
+  reduce:
+    strong: 1
+    uv: 1
+    candle: 1
+- id: 4
+  name: Wall Hugger
+  summary: You can't carry any light source
+  reduce:
+    strong: 1
+    uv: 1
+    candle: 1
+    basic: 1
+- id: 5
+  name: Lone Wolf
+  summary: You must go into the house alone and find the ghost room!
+- id: 6
+  name: Say Cheese
+  summary: You must get a picture of the ghost before you can leave the house!
+- id: 7
+  name: Stalker
+  summary: You must get a picture of the ghost before you can leave the house!
+- id: 8
+  name: This is my house now
+  summary: You must remain in the house until you have all your evidence!
+- id: 9
+  name: Human Camera
+  summary: You must take a head cam and turn your light source off while in the ghost room looking for orbs
+  reduce:
+    tripod: 5
+    video: 6
+  require:
+    head-camera: 1
+- id: 10
+  name: Van Andy
+  summary: You must remain in the van at all times!
+  description: You are <u>not</u> allowed to bring stuff to the door once the house door has been opened!
+  reduce:
+    head-camera: 1
+- id: 11
+  name: Double Whammy
+  summary: You get two personal punishments
+  description: |
+    Spin the wheel two more times and do both punishments.
+    If they directly conflict with one another, reroll the second.
+    <b>Note</b>: The "Items to Bring" section may not be correct.
+- id: 12
+  name: Hoarder
+  summary: You must bring all items you can carry on the map into the ghost room.
+  description: |
+    Map must be changed to a street house or farm house.
+    You must open all doors, drawers, and cabinets.
+- id: 13
+  name: Art School Dropout
+  summary: You must make a masterpiece in the ghost room and photograph it.
+  require:
+    photo: 1
+- id: 14
+  name: Left 4 Dead
+  summary: You must survive at least one ghost hunt without closing any doors.
+  description: |
+    Teammates are not allowed to close the door for you.
+- id: 15
+  name: Wild Card
+  summary: Roll for another punishment and swap with another player if you wish.
+- id: 16
+  name: Plumbers Crack
+  summary: You must find dirty water and photography it.
+  description: |
+    If you fail, your teammates must sacrifice you to the water gods by a sink in a ritualistic manner.
+  require:
+    photo: 1
+- id: 17
+  name: Housewife
+  summary: Clean-up and set a table for two
+  description: |
+    Map must be changed to a street or farm house.
+    You need to set a table for two and put away any other
+    dishes or food items that are out of place away in cabinets.
+- id: 18
+  name: Kleptomaniac
+  summary: Fill your pockets with 3 interesting or unique items your teammates will like.
+  description: |
+    Your teammates must vote on your items' worthiness.
+    If you fail, you get one more chance to get three more items.
+
+    If you fail again, you must take an extra punishment next round.
+- id: 19
+  name: Mission Impossible
+  summary: Find the bone or Ouija board in the Asylum or face more punishment next round.
+  description: |
+    The map must be changed to Asylum.
+    If you fail to find either, each teammate gets to add an additional punishment next round.
+
+    If you find both, you may pass this punishment to a teammate of your choice.
+- id: 20
+  name: I got bills I gotta pay
+  summary: Turn on anything and everything
+  description: |
+    Sinks, TVs, radios, lights, etc.
+
+    Make sure you keep the breaker on at all times so be careful.

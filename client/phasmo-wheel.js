@@ -10,7 +10,22 @@ const PERSONAL_SIDEBAR = 'personal';
 const ITEMS_SIDEBAR = 'items';
 const HELP_SIDEBAR = 'help';
 
-const sumIds = (sum, { id }) => sum + id;
+const normalizeDescription = description =>
+  description && `<ul>
+      <li>
+        ${description.split('\n')
+    .map(line => line.trim())
+    .filter(Boolean)
+    .join('</li><li>')}
+      </li>
+  </ul>`;
+
+const normalizeRule = rule => ({
+  ...rule,
+  weight: rule.weight || 1,
+  active: true,
+  description: normalizeDescription(rule.description)
+});
 
 class PhasmoWheel extends BaseElement {
   static properties = {
@@ -190,16 +205,15 @@ class PhasmoWheel extends BaseElement {
   };
 
   async loadData() {
-    this.personalRules = (await (await fetch('../data/personal-rules.json')).json())
-      .map(rule => ({ ...rule, weight: rule.weight || 1, active: true }));
+    this.items = YAML.parse(await (await fetch('../data/items.yml')).text());
 
-    this.activePersonalRules = this.personalRules;
+    this.personalRules = YAML.parse(await (await fetch('../data/personal-rules.yml')).text())
+      .map(normalizeRule);
 
-    this.teamRules = (await (await fetch('../data/team-rules.json')).json())
-      .map(rule => ({ ...rule, weight: rule.weight || 1, active: true }));
-    this.activeTeamRules = this.teamRules;
+    this.teamRules = YAML.parse(await (await fetch('../data/team-rules.yml')).text())
+      .map(normalizeRule);
 
-    this.items = await (await fetch('../data/items.json')).json();
+    this.updateActiveRules();
   }
 
   updateActiveRules = () => {
@@ -208,15 +222,16 @@ class PhasmoWheel extends BaseElement {
   };
 
   updateUrl() {
-    const { activePersonalRules, activeTeamRules, currentTeamRule, currentPersonalRules } = this;
+    const { personalRules, teamRules, currentTeamRule, currentPersonalRules, names } = this;
 
-    if (!activeTeamRules || !activePersonalRules || !currentTeamRule || !currentPersonalRules) return;
+    if (!teamRules || !personalRules || !currentTeamRule || !currentPersonalRules) return;
 
     document.location.hash = [
       currentTeamRule.id,
       currentPersonalRules.map(({ id } = {}) => id || 0).join('|'),
-      activeTeamRules.reduce(sumIds, 0),
-      activePersonalRules.reduce(sumIds, 0)
+      teamRules.map(({ active }) => active ? 1 : 0).join(''),
+      personalRules.map(({ active }) => active ? 1 : 0).join(''),
+      names.join('|')
     ].join('-');
   }
 
@@ -225,12 +240,12 @@ class PhasmoWheel extends BaseElement {
 
     if (!personalRules || !teamRules || !document.location.hash) return;
 
-    let [teamRuleId, personalRuleIds, activeTeamIds, activePersonalIds]
+    let [teamRuleId, personalRuleIds, activeTeamIds, activePersonalIds, names]
       = document.location.hash.slice(1).split('-');
 
     teamRuleId = parseInt(teamRuleId);
-    activeTeamIds = parseInt(activeTeamIds);
-    activePersonalIds = parseInt(activePersonalIds);
+    activeTeamIds = activeTeamIds.split('').map(v => Boolean(parseInt(v)));
+    activePersonalIds = activePersonalIds.split('').map(v => Boolean(parseInt(v)));
 
     this.currentTeamRule = teamRules.find(({ id }) => teamRuleId === id);
 
@@ -238,10 +253,12 @@ class PhasmoWheel extends BaseElement {
       .map(id => parseInt(id))
       .map(personalId => personalRules.find(({ id }) => personalId === id));
 
-    this.teamRules = this.teamRules.map(rule => ({ ...rule, active: (activeTeamIds & rule.id) === rule.id }));
+    this.teamRules = this.teamRules.map((rule, index) => ({ ...rule, active: activeTeamIds[index] }));
 
     this.personalRules = this.personalRules
-      .map(rule => ({ ...rule, active: (activePersonalIds & rule.id) === rule.id }));
+      .map((rule, index) => ({ ...rule, active: activePersonalIds[index] }));
+
+    this.names = names.split('|').map(name => decodeURIComponent(name));
 
     this.updateActiveRules();
   }

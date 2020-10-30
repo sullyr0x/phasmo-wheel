@@ -1,4 +1,4 @@
-import { html } from '../../lib/lit-html.js';
+import {html, unsafeHTML} from '../../lib/lit-html.js';
 import BaseElement from '../../BaseElement.js';
 import './spinner-wheel.js'
 
@@ -7,11 +7,18 @@ class SpinnerPanel extends BaseElement {
     name: { type: String },
     rules: { type: Array },
     editable: { type: Boolean },
-    currentRule: { type: Object }
+    currentRule: { type: Object },
+    showPopup: { type: Boolean }
   };
 
+  updated(changed) {
+    if (changed.hasOwnProperty('rules') && this.rules.length && !this.currentRule?.id) {
+      this.currentRule = this.rules[0];
+    }
+  }
+
   render() {
-    const { name, rules, editable, currentRule, handleNameChange } = this;
+    const { name, rules, editable, currentRule, showPopup, handleShowPopup, handleHidePopup, handleNameChange } = this;
 
     return html`
       ${editable ? html`
@@ -23,15 +30,43 @@ class SpinnerPanel extends BaseElement {
         .rules=${rules}
         .currentRule=${currentRule}
       ></spinner-wheel>
-      ${currentRule ? html`
+      ${currentRule && currentRule.id ? html`
         <rule>
-          <h3>
+          <h3 @click=${handleShowPopup}>
             ${currentRule.name}
+            <button class="popup-help"></button>
           </h3>
         </rule>
       ` : ''}
+      ${showPopup ? html`
+        <popup @click=${handleHidePopup}>
+          <div class="content">
+            <button class="popup-close" @click=${handleHidePopup}></button>
+            <h3>${currentRule.name}</h3>
+            <p class="summary">${currentRule.summary}</p>
+            ${currentRule.description ? html`
+              <hr />
+              <div>
+                ${unsafeHTML(currentRule.description)}
+              </div>
+            `: ''}
+          </div>
+        </popup>
+      ` : ''}
     `;
   }
+
+  handleShowPopup = () => {
+    this.showPopup = true;
+    document.body.classList.add('hasPopup');
+  };
+
+  handleHidePopup = event => {
+    if (![...this.querySelectorAll('popup, popup .popup-close')].includes(event.path[0])) return;
+
+    this.showPopup = false;
+    document.body.classList.remove('hasPopup');
+  };
 
   handleNameChange = ({ currentTarget: { value: name } }) => {
     this.dispatchEvent(new CustomEvent('name-change', { detail: { name } }));

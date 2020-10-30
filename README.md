@@ -4,6 +4,12 @@ A small utility to make using the Phasmo-Wheel options more fun.
 
 To learn more, check out the Discord: https://discord.gg/UPEceAz
 
+## TODO
+
+- Implement support for "Double Whammy"
+- Implement support for "Wild Card"
+- Implement support for additional punishments
+
 ## Quick Start
 
     npm install
@@ -23,31 +29,29 @@ restart if there are any changes.
 
 Data is found in the `data` folder. It is broken into 3 files:
 
-- `team-rules.json` has Team rules
-- `personal-rules.json` has Personal rules
-- `items.json` has item data
+- `team-rules.yml` has Team rules
+- `personal-rules.yml` has Personal rules
+- `items.yml` has item data
 
 ### Rule Data
 
 The format for rules (both Team and Personal) is:
 
-    {
-      "id": 1
-      "name": "Name",
-      "summary": "Short explainer",
-      "description": "Lengthier description",
-      "weight": 1.0,
-      "restrict": {
-        "item-id": 1
-      },
-      "reduce": {
-        "item-id": 1
-      }
-    } 
+    - id: 1
+      name: Name
+      summary: Short summary
+      description: Longer description
+      weight: 1.0
+      restrict:
+        item-id: 1
+      reduce:
+        item-id: 1 
+      require:
+        item-id: 1
     
 The values are:
 
-- `id`: A power-of-2 ID unique to the ruleset.
+- `id`: A unique ID for the rule.
 - `name`: The name of the rule to show on and under the wheel.
 - `summary`: A brief summary of the rule.
 - `description`: A longer description of the rule. Supports HTML.
@@ -64,7 +68,8 @@ The values are:
     
     E.g., Candle Only means the player can only use a candle, so they don't
     need a strong, uv, or basic flashlight, meaning those are both set to 1 to reduce.
-    
+- `require`: Optional. Indicates you must bring at least this quantity of item for 
+    this punishment.
     
 ### Item Data
 
@@ -76,6 +81,10 @@ The format for items is:
       "min": 0,
       "max": 4
     }
+    - id: short-name
+      name: name
+      min: 0
+      max: 4
     
 The values are:
 

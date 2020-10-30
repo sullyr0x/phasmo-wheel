@@ -24,7 +24,14 @@ class SpinnerWheel extends BaseElement {
 
   updated(changed) {
     if (['rules', 'currentRule'].some(key => Object.keys(changed).includes(key))
+      && this.rules
       && this.currentRule?.id !== changed.currentRule?.id && !this.spinning) {
+      if (!this.rules.find(({ id }) => id === this.currentRule.id)
+        || !this.currentRule) {
+        this.dispatchRuleChange(this.rules.length ? this.rules[0] : {});
+        return;
+      }
+
       this.rotateToRule();
     }
 
@@ -125,22 +132,23 @@ class SpinnerWheel extends BaseElement {
     ctx.fill();
     ctx.stroke();
 
-    rules.forEach(({ weight, name }, index) => {
+    rules.forEach(({weight, name}, index) => {
       const angle = weight / totalWeight * 2 * Math.PI;
 
       ctx.beginPath();
 
+      ctx.moveTo(canvas.width / 2, padding);
       // Start in center
-      ctx.moveTo(canvas.width / 2, canvas.height / 2);
+      rules.length > 1 && ctx.moveTo(canvas.width / 2, canvas.height / 2);
       // Line to edge
-      ctx.lineTo(canvas.width / 2, padding);
+      rules.length > 1 && ctx.lineTo(canvas.width / 2, padding);
       // Arc over wedge
       ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 2 - 10, -Math.PI / 2, -Math.PI / 2 + angle, false);
 
       ctx.translate(canvas.width / 2, canvas.height / 2);
       ctx.rotate(angle);
       ctx.translate(-canvas.width / 2, -canvas.height / 2);
-      ctx.lineTo(canvas.width / 2, padding);
+      rules.length > 1 && ctx.lineTo(canvas.width / 2, padding);
 
       ctx.closePath();
 
@@ -157,10 +165,17 @@ class SpinnerWheel extends BaseElement {
       ctx.rotate(Math.PI / 2);
       ctx.translate(-canvas.width / 2, -canvas.height / 2);
       ctx.fillStyle = '#FFF';
-      ctx.font = '14px sans-serif';
+      ctx.font = `${Math.floor(canvas.width / 30)}px sans-serif`;
       ctx.textBaseline = 'middle';
       ctx.textAlign = 'center';
-      ctx.fillText(name, canvas.width / 4, canvas.height / 2, canvas.width / 2 - 20);
+      ctx.fillText(
+        name,
+        rules.length > 1
+            ? canvas.width / 4 - canvas.width / 30
+            : canvas.width / 2,
+        canvas.height / 2,
+        canvas.width / 2 - 20
+      );
 
       ctx.translate(canvas.width / 2, canvas.height / 2);
       ctx.rotate(-Math.PI / 2);

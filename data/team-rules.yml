@@ -1,0 +1,133 @@
+- id: 1
+  name: Back to Basics
+  summary: You can only add required team or personal punishment items only!
+  restrict:
+    emf: 1
+    basic: 1
+    photo: 1
+    lighter: 0
+    candle: 0
+    uv: 1
+    crucifix: 0
+    video: 1
+    box: 1
+    salt: 0
+    smudge: 0
+    tripod: 0
+    strong: 0
+    motion: 0
+    sound: 0
+    thermometer: 0
+    pills: 0
+    book: 1
+    infrared: 0
+    parabolic: 0
+    glowstick: 0
+    head-camera: 0
+- id: 2
+  name: Over and Out
+  summary: No radio chat, local only!
+- id: 3
+  name: I don't have a problem
+  summary: No pills!
+  restrict:
+    pills: 0
+- id: 4
+  name: Can you hear me now?
+  summary:  The Parabolic Mic is the only scanning tool allowed to find the ghost room
+  description: |
+    You must use only sensors (motion, light, infrared) to confirm the room before looking for evidence
+- id: 5
+  name: Rave Room
+  summary: Shut that power off and only use glowsticks to light the ghost room
+  description: |
+    Personal light sources are not allowed in the ghost room!
+- id: 6
+  name: Romantic Getaway
+  summary: Candles must be used to light the ghost room
+  description: |
+    No other light sources are allowed in the ghost room, including personal
+    If there is a door, it must remain closed while investigating
+  required:
+    candle: 1
+- id: 7
+  name: Atheist
+  summary: No crucifix or smudge sticks
+  restrict:
+    crucifix: 0
+    smudge: 0
+- id: 8
+  name: Grab n' Go
+  summary: Team can only bring what they can carry
+  description: |
+    No item swaps and team can only use head cams to look for orbs!
+- id: 9
+  name: Double or Nothing
+  summary: Yay! Roll for two random team punishments.
+  description: |
+    If you get "Nothing" on either roll, you're safe, no team punishment.
+- id: 10
+  name: Nothing
+  summary: Roll again
+  description: |
+    If this was for "Double or Nothing" you have no team punishment and don't have to roll again.
+- id: 11
+  name: Quarantine
+  summary: Only one person per room, two in large, but maintain social distance and all costs
+- id: 12
+  name: No Running!
+  summary: Team cannot speed walk
+- id: 13
+  name: EMP
+  summary: Team is only allowed one candle, which must stay in the ghost room.
+  description: |
+    Turn off the power.
+  restrict:
+    candle: 1
+    strong: 0
+    basis: 0
+    uv: 1
+- id: 14
+  name: Storm Area 51
+  summary: "They Can't Stop All of Us"
+  description: |
+    Everyone must "Naruto run" (look down) while holding shift
+- id: 15
+  name: Cat's got your tongue
+  summary: No talking at all!
+  description: Find a new way to talk with your team before loading into the van
+- id: 16
+  name: Insane in the Membrane
+  summary: Team must have 0% sanity before leaving
+  description: |
+    If you have a "Van Andy", they must wait until team has collected all evidence then they can go insane alone in the house
+- id: 17
+  name: Pop a Squat
+  summary: Team must crouch at alll times outside the van
+  description: |
+    You are allowed to stand to take a picture of dirty water or fingerprints
+- id: 18
+  name: Forever Alone
+  summary: Only one person is allowed in the house at a time
+  description: |
+    What you grab is what you get; no item swaps or dropping items in the house
+    Team must rotate every 3 minutes
+    If you have a "Lone Wolf", they must complete their mission first
+    Reroll anyone who gets "Stalker" or "This is my house now"
+    If you get "Say Cheese", you are allowed to leave house to rotate
+- id: 19
+  name: Tag Team
+  summary: Teams of 2, only one person from each team in the house at a time
+  description: |
+    You are allowed to bring a candle and one other item, no flashlight
+    The team that finds evidence, completes an objective or finds a ghost room using the item they brough in gets a point
+    A confirmed photo is worth 2 points
+    Complete 6 rounds, 2 minutes each round
+    If you don't get all the evidence, you must guess
+    Guessing the ghost correctly is worth 3 points
+    The members of the team with the least number of points each receive an extra personal punishment
+  restrict:
+    basic: 0
+    strong: 0
+  required:
+    candle: 2

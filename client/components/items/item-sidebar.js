@@ -6,7 +6,8 @@ class ItemSidebar extends BaseElement {
     personalRules: { type: Array },
     teamRule: { type: Array },
     items: { type: Array },
-    itemsToBring: { type: Array }
+    itemsToBring: { type: Array },
+    showLegend: { type: Boolean }
   }
 
   constructor() {
@@ -22,13 +23,19 @@ class ItemSidebar extends BaseElement {
   }
 
   render() {
-    const { itemsToBring } = this;
+    const { itemsToBring, teamRule, personalRules, showLegend, handleShowLegendToggle } = this;
+
+    const rules = [teamRule, ...personalRules].filter(Boolean);
 
     return html`
       <div class="wrapper">
         <h2>Items To Bring</h2>
-        <h3>Legend</h3>
-        <ul class="legend">
+        <h3 
+          class="legend-label" 
+          @click=${handleShowLegendToggle}
+          ?show=${showLegend}
+        >Legend</h3>
+        <ul class="legend" ?show=${showLegend}>
           <li>
             <span class="quantity">3x</span> take max
           </li>
@@ -42,24 +49,36 @@ class ItemSidebar extends BaseElement {
           <li under>
             <span class="quantity">1x</span>
             means the game forces you to take this quantity but don't use it
-          </li>        
+          </li> 
+          <li>
+            <span class="required">(1)</span>
+            means a challenge requires bringing at least this many of this item
+          </li>       
         </ul>
         <hr />
         <h3>Items</h3>
         <ul>
-          ${itemsToBring.map(({ name, quantity, min, max }) => html`
-            <li
-              ?under=${quantity < min && min > 0}
-              ?none=${quantity === min}
-              ?less=${quantity < max && quantity > min}
-            >
-              <span class="quantity">${Math.max(min, quantity)}x</span>
-              <span class="name">${name}</span>
-            </li>
-          `)}
+          ${itemsToBring.map(({ id, name, quantity, min, max }) => {
+            const requiredQuantity = rules.reduce((sum, { require = {} }) => sum + (require[id] || 0), 0);
+            
+            return html`
+              <li
+                ?under=${quantity < min && min > 0}
+                ?none=${quantity === min}
+                ?less=${quantity < max && quantity > min}
+              >
+                <span class="quantity">${Math.max(min, quantity)}x</span>
+                <span class="name">${name}</span>
+                ${requiredQuantity ? html`<span class="required">(${requiredQuantity})</span>` : ''}
+              </li>
+          `})}
         </ul>
       </div>
     `;
+  }
+
+  handleShowLegendToggle = () => {
+    this.showLegend = !this.showLegend;
   }
 
   calculateItemsToBring() {
@@ -73,14 +92,14 @@ class ItemSidebar extends BaseElement {
     const rules = [
       ...personalRules,
       teamRule
-    ];
+    ].filter(Boolean);
 
     this.itemsToBring = items
       .map(({ id, name, min, max }) => ({
         id,
         name,
         quantity: Math.max(
-          0,
+          Math.max(...rules.map(({ require = {} }) => require[id] || 0)),
           Math.min(
             ...rules.map(({ restrict = {} }) => restrict[id] ?? max),
             max - rules.reduce((sum, { reduce = {} }) => sum + (reduce[id] || 0), 0)

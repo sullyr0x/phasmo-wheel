@@ -48,6 +48,7 @@ main {
   position: relative;
   overflow: hidden;
   border-left: 2px solid #222;
+  padding-bottom: 50px;
 }
 
 .sidebar:nth-child(n+1) {
@@ -68,9 +69,10 @@ main {
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: 50px;
   padding: 0 16px 16px;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   min-width: 200px;
 }
 
@@ -111,9 +113,20 @@ rule-sidebar.sidebar li h3 {
   margin: 0 0 .5em;
 }
 
-rule-sidebar.sidebar li:not([active]) {
+rule-sidebar.sidebar :not(.description) > ul > li:not([active]) {
   background: #333339;
   color: #999 !important;
+}
+
+rule-sidebar.sidebar .description ul {
+  list-style: disc;
+  margin: 1em;
+}
+
+rule-sidebar.sidebar .description li {
+  border: 0;
+  padding: 0;
+  margin-bottom: 4px;
 }
 
 .sidebar span {
@@ -206,11 +219,76 @@ header > buttons button#toggle-help:after {
   font-weight: 800;
 }
 
+spinner-panel button {
+  font-family: "Font Awesome 5 Pro";
+  background: none;
+  color: #EEE;
+  border: 0;
+  font-size: 1.2em;
+  position: relative;
+  display: inline-block;
+  outline: none;
+}
+
+spinner-panel popup {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, .5);
+  z-index: 99999;
+}
+
+body.hasPopup {
+  overflow: hidden;
+}
+
+spinner-panel popup .content {
+  background: #333;
+  width: 50%;
+  height: 300px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  padding: 8px 16px;
+  user-select: text;
+}
+
+spinner-panel popup .popup-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 2em;
+  cursor: pointer;
+}
+
+spinner-panel popup .summary {
+  text-align: center;
+}
+
+spinner-panel popup hr {
+  margin-bottom: 1em;
+}
+
+spinner-panel rule * {
+  cursor: pointer;
+}
+
+spinner-panel rule button:after {
+  position: absolute;
+  bottom: -5px;
+  left: 3px;
+}
+
+spinner-panel button.popup-help:after,
 .icon.help:after {
   content: '\f059';
   font-weight: 800;
 }
 
+spinner-panel button.popup-close:after,
 header > buttons button[active]:after {
   content: '\f00d' !important;
   font-weight: 800 !important;
@@ -223,6 +301,7 @@ main > spin-all {
   right: 0;
   left: 0;
   user-select: none;
+  z-index: 10000;
 }
 
 main > spin-all:hover {
@@ -305,6 +384,10 @@ item-sidebar li[less] span.quantity {
   color: #960;
 }
 
+item-sidebar span.required {
+  color: #339933;
+}
+
 item-sidebar ul:not(.legend) li[under],
 item-sidebar ul.legend li[under] span.quantity {
   text-decoration: line-through rgba(255, 255, 255, .5);
@@ -318,6 +401,32 @@ item-sidebar ul:not(.legend) li[none],
 item-sidebar ul.legend li[none] span.quantity  {
   text-decoration: line-through rgba(255, 255, 255, .5);
   color: inherit;
+}
+
+.legend-label {
+  cursor: pointer;
+}
+
+.legend-label:after {
+  font-family: "Font Awesome 5 Pro";
+  content: "\f0da";
+  margin-left: .5em;
+}
+
+.legend-label[show]:after {
+  content: "\f0d7";
+  margin-left: .4em;
+}
+
+ul.legend {
+  transition: max-height linear .4s;
+  max-height: 0;
+  overflow: hidden;
+  margin: 0;
+}
+
+ul.legend[show] {
+  max-height: 400px;
 }
 
 rule-sidebar buttons {
