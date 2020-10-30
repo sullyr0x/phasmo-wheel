@@ -3,14 +3,19 @@
     "id": 1,
     "name": "Candle Only",
     "summary": "Your are only allowed to carry a candle as a light source",
-    "description": "",
-    "weight": 1.0
+    "description": "Hello World",
+    "weight": 1.0,
+    "reduce": {
+      "basic": 1,
+      "strong": 1,
+      "uv": 1
+    }
   },
   {
     "id": 2,
     "name": "UV Only",
     "summary": "Your are only allowed to carry a UV light as a light source",
-    "description": "",
+    "description": "<p>Goodbye World</p>",
     "weight": 1.0
   },
   {
@@ -23,7 +28,12 @@
     "id": 8,
     "name": "Basic Flashlight Only",
     "summary": "Basic flashlight only",
-    "weight": 4.0
+    "weight": 4.0,
+    "reduce": {
+      "candle": 1,
+      "strong": 1,
+      "uv": 1
+    }
   },
   {
     "id": 16,

@@ -1,5 +1,5 @@
-import { html } from '../lib/lit-html.js';
-import BaseElement from '../BaseElement.js';
+import { html } from '../../lib/lit-html.js';
+import BaseElement from '../../BaseElement.js';
 
 const colors = [
   '#333',
@@ -14,27 +14,24 @@ const colors = [
 class SpinnerWheel extends BaseElement {
   static properties = {
     rules: { type: Array },
-    rotation: { type: Number }
+    rotation: { type: Number },
+    currentRule: { type: Object }
   };
 
   get totalWeight() {
-    return this.rules?.reduce((sum, { weight = 1.0 }) => sum + weight, 0);
+    return this.rules?.reduce((sum, { weight }) => sum + weight, 0);
   }
 
-  get currentRule() {
-    const { rotation, rules, totalWeight } = this;
-
-    if (!rules) return null;
-
-    let angle = Math.PI * 7 / 2;
-    let ruleIndex = -1;
-    while (angle >= rotation) {
-      ruleIndex++;
-      ruleIndex %= rules.length;
-      angle -= (rules[ruleIndex].weight || 1) / totalWeight * Math.PI * 2;
+  updated(changed) {
+    if (['rules', 'currentRule'].some(key => Object.keys(changed).includes(key))
+      && this.currentRule?.id !== changed.currentRule?.id && !this.spinning) {
+      this.rotateToRule();
     }
 
-    return rules[ruleIndex];
+    this.canvas = this.querySelector('canvas');
+    this.ctx = this.canvas.getContext('2d');
+
+    this.renderCanvas();
   }
 
   constructor() {
@@ -55,17 +52,6 @@ class SpinnerWheel extends BaseElement {
     resizeObserver.observe(this);
   }
 
-  updated(changed) {
-    this.canvas = this.querySelector('canvas');
-    this.ctx = this.canvas.getContext('2d');
-
-    this.renderCanvas();
-
-    if (changed.hasOwnProperty('rules')) {
-      this.dispatchRuleChange();
-    }
-  }
-
   connectedCallback() {
     super.connectedCallback();
   }
@@ -80,6 +66,7 @@ class SpinnerWheel extends BaseElement {
     this.acceleration = this.initialAcceleration + ((2 * Math.random() - 1) * this.initialAccelerationVariance);
 
     this.lastTick = Date.now();
+    this.spinning = true;
     this.tick();
   };
 
@@ -98,14 +85,16 @@ class SpinnerWheel extends BaseElement {
 
     clearTimeout(this.timeoutId);
 
-    const newRule = this.currentRule;
+    const newRule = this.calculateCurrentRule();
 
     if (currentRule !== newRule) {
-      this.dispatchRuleChange();
+      this.dispatchRuleChange(newRule);
     }
 
     if (this.velocity > 0 || this.acceleration > 0) {
       this.timeoutId = setTimeout(this.tick, 1000 / 120);
+    } else {
+      this.spinning = false;
     }
   };
 
@@ -123,7 +112,7 @@ class SpinnerWheel extends BaseElement {
     ctx.save();
 
     ctx.translate(canvas.width / 2, canvas.height / 2);
-    ctx.rotate(rotation);
+    ctx.rotate(rotation - Math.PI / 2);
     ctx.translate(-canvas.width / 2, -canvas.height / 2);
 
     ctx.lineWidth = 6;
@@ -136,7 +125,7 @@ class SpinnerWheel extends BaseElement {
     ctx.fill();
     ctx.stroke();
 
-    rules.forEach(({ weight = 1.0, name }, index) => {
+    rules.forEach(({ weight, name }, index) => {
       const angle = weight / totalWeight * 2 * Math.PI;
 
       ctx.beginPath();
@@ -194,13 +183,43 @@ class SpinnerWheel extends BaseElement {
     ctx.fill();
   };
 
-  dispatchRuleChange = () => {
+  dispatchRuleChange = rule => {
     this.dispatchEvent(new CustomEvent('rule-change', {
-      detail: { rule: this.currentRule },
+      detail: { rule },
       bubbles: true,
       composed: true
     }));
   };
+
+  calculateCurrentRule = () => {
+    const { rotation, rules, totalWeight } = this;
+
+    if (!rules || !rules.length) return {};
+
+    let angle = Math.PI * 2;
+    let ruleIndex = -1;
+    while (angle >= rotation) {
+      ruleIndex++;
+      ruleIndex %= rules.length;
+      angle -= (rules[ruleIndex].weight) / totalWeight * Math.PI * 2;
+    }
+
+    return rules[ruleIndex];
+  }
+
+  rotateToRule = () => {
+    const { currentRule: targetRule, rules, totalWeight } = this;
+
+    if (!targetRule || !rules) return;
+
+    const targetIndex = rules.findIndex(({ id }) => id === targetRule.id);
+
+    const weightToMove = [
+      ...rules.slice(0, targetIndex)
+    ].reduce((sum, { weight }) => sum + weight, 0);
+
+    this.rotation = (Math.PI * 2) * ((-weightToMove - (targetRule.weight / 2)) / totalWeight);
+  }
 }
 
 customElements.define('spinner-wheel', SpinnerWheel);

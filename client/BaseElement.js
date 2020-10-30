@@ -11,11 +11,12 @@ const registerHandler = (element, properties) => {
       if (isBackingKey(prop)) {
         if (element[prop] === value) return;
 
+        const oldValue = element[prop];
         element[prop] = value;
 
         if (element.__isConnected) {
           render(element.render(), element);
-          element.updated({ [fromBackingKey(prop)]: value });
+          element.updated({ [fromBackingKey(prop)]: oldValue });
         }
       }
 

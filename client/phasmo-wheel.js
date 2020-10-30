@@ -1,6 +1,16 @@
 import {html} from './lib/lit-html.js';
 import BaseElement from './BaseElement.js';
-import './components/spinner-panel.js';
+import './components/spinner/spinner-panel.js';
+import './components/rules/rule-sidebar.js';
+import './components/items/item-sidebar.js';
+import './components/help-sidebar.js';
+
+const TEAM_SIDEBAR = 'team';
+const PERSONAL_SIDEBAR = 'personal';
+const ITEMS_SIDEBAR = 'items';
+const HELP_SIDEBAR = 'help';
+
+const sumIds = (sum, { id }) => sum + id;
 
 class PhasmoWheel extends BaseElement {
   static properties = {
@@ -8,17 +18,36 @@ class PhasmoWheel extends BaseElement {
     activeTeamRules: { type: Array },
     personalRules: { type: Array },
     teamRules: { type: Array },
+    showSidebar: { type: String },
     items: { type: Array },
     names: { type: Array },
     currentTeamRule: { type: Object },
     currentPersonalRules: { type: Array }
   };
 
+  updated(changed) {
+    if (this.personalRules && this.teamRules && !this.loaded) {
+      this.loaded = true;
+      this.parseUrl();
+    }
+
+    if (changed.hasOwnProperty('personalRules') && !this.currentPersonalRules[0]) {
+      this.currentPersonalRules = this.currentPersonalRules.map(() => this.personalRules.find(({ active }) => active));
+    }
+
+    if (changed.hasOwnProperty('teamRules') && !this.currentTeamRule) {
+      this.currentTeamRule = this.teamRules.find(({ active }) => active);
+    }
+
+    this.updateUrl();
+  }
+
   constructor() {
     super();
 
+    this.showSidebar = ITEMS_SIDEBAR;
     this.names = ['Player 1', 'Player 2', 'Player 3', 'Player 4'];
-    this.currentPersonalRules = new Array(4);
+    this.currentPersonalRules = new Array(4).fill(undefined);
 
     // noinspection JSIgnoredPromiseFromCall
     this.loadData();
@@ -26,11 +55,41 @@ class PhasmoWheel extends BaseElement {
 
   render() {
     const { activeTeamRules, activePersonalRules, names, currentTeamRule, currentPersonalRules,
-      handleNameChange, handleRuleChange, handleTeamRuleChange, handleSpinAll } = this;
+      personalRules, teamRules, showSidebar, items,
+      handleNameChange, handleRuleChange, handleTeamRuleChange, handleSpinAll,
+      handlePersonalChange, handleTeamChange, handleToggleSidebar } = this;
 
     return html`
       <main>
-        <h1>Phasmo-Wheel</h1>
+        <header>
+            <h1><a href="/">Phasmo-Wheel</a></h1>
+            <buttons>
+                <button 
+                    id="toggle-team"
+                    .sidebar=${TEAM_SIDEBAR}
+                    @click=${handleToggleSidebar}
+                    ?active=${showSidebar === TEAM_SIDEBAR}
+                ></button>
+                <button 
+                    id="toggle-personal"
+                    .sidebar=${PERSONAL_SIDEBAR}
+                    @click=${handleToggleSidebar}
+                    ?active=${showSidebar === PERSONAL_SIDEBAR}
+                ></button>
+                <button 
+                    id="toggle-items"
+                    .sidebar=${ITEMS_SIDEBAR}
+                    @click=${handleToggleSidebar}
+                    ?active=${showSidebar === ITEMS_SIDEBAR}
+                ></button>
+                <button 
+                    id="toggle-help"
+                    .sidebar=${HELP_SIDEBAR}
+                    @click=${handleToggleSidebar}
+                    ?active=${showSidebar === HELP_SIDEBAR}
+                ></button>
+            </buttons>
+        </header>
         <team-wheel>
           <spinner-panel 
             .rules=${activeTeamRules} 
@@ -56,8 +115,49 @@ class PhasmoWheel extends BaseElement {
           Spin All
         </spin-all>
       </main>
+      <rule-sidebar
+        title="Team Rules"
+        class="sidebar"
+        ?show=${showSidebar === TEAM_SIDEBAR}
+        .rules=${teamRules}
+        @change=${handleTeamChange}
+      ></rule-sidebar>
+      <rule-sidebar 
+        title="Personal Rules"
+        class="sidebar"
+        ?show=${showSidebar === PERSONAL_SIDEBAR}
+        .rules=${personalRules}
+        @change=${handlePersonalChange}
+      ></rule-sidebar>
+      <item-sidebar
+        class="sidebar"
+        ?show=${showSidebar === ITEMS_SIDEBAR}
+        .personalRules=${currentPersonalRules}
+        .teamRule=${currentTeamRule}
+        .items=${items}
+      ></item-sidebar>
+      <help-sidebar
+        class="sidebar"
+        ?show=${showSidebar === HELP_SIDEBAR}
+      ></help-sidebar>
     `;
   }
+
+  handleToggleSidebar = event => {
+    const { sidebar } = event.currentTarget;
+
+    this.showSidebar = this.showSidebar === sidebar ? undefined : sidebar;
+  }
+
+  handlePersonalChange = ({ detail: { rules }}) => {
+    this.personalRules = rules;
+    this.updateActiveRules();
+  };
+
+  handleTeamChange = ({ detail: { rules }}) => {
+    this.teamRules = rules;
+    this.updateActiveRules();
+  };
 
   handleNameChange = event => {
     const index = parseInt(event.currentTarget.getAttribute('index'));
@@ -91,17 +191,59 @@ class PhasmoWheel extends BaseElement {
 
   async loadData() {
     this.personalRules = (await (await fetch('../data/personal-rules.json')).json())
-      .map(rule => ({ ...rule, active: true }));
+      .map(rule => ({ ...rule, weight: rule.weight || 1, active: true }));
+
     this.activePersonalRules = this.personalRules;
 
     this.teamRules = (await (await fetch('../data/team-rules.json')).json())
-      .map(rule => ({ ...rule, active: true }));
+      .map(rule => ({ ...rule, weight: rule.weight || 1, active: true }));
     this.activeTeamRules = this.teamRules;
 
     this.items = await (await fetch('../data/items.json')).json();
   }
 
+  updateActiveRules = () => {
+    this.activePersonalRules = this.personalRules.filter(({ active }) => active);
+    this.activeTeamRules = this.teamRules.filter(({ active }) => active);
+  };
+
   updateUrl() {
+    const { activePersonalRules, activeTeamRules, currentTeamRule, currentPersonalRules } = this;
+
+    if (!activeTeamRules || !activePersonalRules || !currentTeamRule || !currentPersonalRules) return;
+
+    document.location.hash = [
+      currentTeamRule.id,
+      currentPersonalRules.map(({ id } = {}) => id || 0).join('|'),
+      activeTeamRules.reduce(sumIds, 0),
+      activePersonalRules.reduce(sumIds, 0)
+    ].join('-');
+  }
+
+  parseUrl() {
+    const { personalRules, teamRules } = this;
+
+    if (!personalRules || !teamRules || !document.location.hash) return;
+
+    let [teamRuleId, personalRuleIds, activeTeamIds, activePersonalIds]
+      = document.location.hash.slice(1).split('-');
+
+    teamRuleId = parseInt(teamRuleId);
+    activeTeamIds = parseInt(activeTeamIds);
+    activePersonalIds = parseInt(activePersonalIds);
+
+    this.currentTeamRule = teamRules.find(({ id }) => teamRuleId === id);
+
+    this.currentPersonalRules = personalRuleIds.split('|')
+      .map(id => parseInt(id))
+      .map(personalId => personalRules.find(({ id }) => personalId === id));
+
+    this.teamRules = this.teamRules.map(rule => ({ ...rule, active: (activeTeamIds & rule.id) === rule.id }));
+
+    this.personalRules = this.personalRules
+      .map(rule => ({ ...rule, active: (activePersonalIds & rule.id) === rule.id }));
+
+    this.updateActiveRules();
   }
 }
 

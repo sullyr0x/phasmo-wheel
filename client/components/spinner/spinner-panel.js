@@ -1,5 +1,5 @@
-import { html } from '../lib/lit-html.js';
-import BaseElement from '../BaseElement.js';
+import { html } from '../../lib/lit-html.js';
+import BaseElement from '../../BaseElement.js';
 import './spinner-wheel.js'
 
 class SpinnerPanel extends BaseElement {
@@ -21,6 +21,7 @@ class SpinnerPanel extends BaseElement {
       `}
       <spinner-wheel
         .rules=${rules}
+        .currentRule=${currentRule}
       ></spinner-wheel>
       ${currentRule ? html`
         <rule>

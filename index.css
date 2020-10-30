@@ -1,118 +1,340 @@
 * {
-    box-sizing: content-box;
-    font-family: Arial, Helvetica, sans-serif;
-    color: #EEE;
+  box-sizing: content-box;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 html {
-    height: 100%;
+  min-height: 100%;
+  color: #EEE;
 }
 
 html, body, phasmo-wheel {
-    display: flex;
-    padding: 0;
-    margin: 0;
+  display: flex;
+  padding: 0;
+  margin: 0;
 }
 
 body, phasmo-wheel, main {
-    flex: 1;
+  flex: 1;
+}
+
+a {
+  text-decoration: underline;
+  color: inherit !important;
+}
+
+h1 a {
+  text-decoration: none;
+}
+
+div#old {
+  position: absolute;
+  color: #000;
 }
 
 phasmo-wheel {
-    display: block;
-    background: #363640;
+  display: flex;
+  flex-direction: row;
+  background: #363640;
 }
 
 main {
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;
-    justify-items: center;
-    height: 100%;
+  flex: 8;
 }
 
-main > h1,
+.sidebar {
+  flex: 0;
+  transition: flex-grow linear .25s, flex-shrink linear .25s;
+  position: relative;
+  overflow: hidden;
+  border-left: 2px solid #222;
+}
+
+.sidebar:nth-child(n+1) {
+  margin-left: -2px; /* same as border */
+}
+
+.sidebar[show] {
+  flex: 2;
+}
+
+.sidebar h2 {
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.sidebar .wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0 16px 16px;
+  overflow: auto;
+  min-width: 200px;
+}
+
+.sidebar .wrapper h2 {
+  margin: 0 -16px 16px;
+}
+
+.sidebar ul {
+  padding-left: 1em;
+}
+
+rule-sidebar.sidebar ul {
+  padding-left: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.sidebar li {
+  margin-bottom: .5em;
+}
+
+rule-sidebar.sidebar .wrapper {
+  padding: 0;
+}
+
+rule-sidebar.sidebar li {
+  padding: 8px 16px;
+  margin: 0;
+  border-bottom: 1px solid #EEE;
+  cursor: pointer;
+}
+
+rule-sidebar.sidebar li:hover {
+  background: #444455;
+}
+
+rule-sidebar.sidebar li h3 {
+  margin: 0 0 .5em;
+}
+
+rule-sidebar.sidebar li:not([active]) {
+  background: #333339;
+  color: #999 !important;
+}
+
+.sidebar span {
+    white-space: nowrap;
+}
+
+main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  padding-bottom: 50px;
+}
+
+header {
+  flex: 0;
+}
+
+header > h1,
+.sidebar h2,
 main > spin-all {
-    flex: 0;
-    text-align: center;
-    margin: 0;
-    padding: .25em;
-    background: #222;
-    font-size: 30px;
+  text-align: center;
+  margin: 0;
+  padding: .25em;
+  background: #222;
+  font-size: 30px;
+}
+
+header {
+  background: #222;
+  justify-items: center;
+  position: relative;
+}
+
+header > h1 {
+  flex: 1;
+}
+
+header > buttons {
+  position: absolute;
+  right: 5px;
+  top: 0;
+  bottom: 0;
+}
+
+header > buttons button {
+  background: none;
+  font-size: 30px;
+  font-family: "Font Awesome 5 Pro";
+  color: #EEE;
+  border: 0;
+  line-height: 49px;
+  outline: none;
+  cursor: pointer;
+}
+
+.icon {
+  font-family: "Font Awesome 5 Pro";
+  font-style: normal;
+}
+
+header > buttons button:hover {
+  color: #CCC;
+}
+
+header > buttons button[active] {
+  color: #FFF;
+}
+
+header > buttons button#toggle-team:after,
+.icon.team:after {
+  content: '\f0c0';
+  font-weight: 800;
+}
+
+header > buttons button#toggle-personal:after,
+.icon.personal:after {
+  content: '\f007';
+  font-weight: 800;
+}
+
+header > buttons button#toggle-items:after,
+.icon.items:after {
+  content: '\f290';
+  font-weight: 800;
+}
+
+header > buttons button#toggle-help:after {
+  content: '\f128';
+  font-weight: 800;
+}
+
+.icon.help:after {
+  content: '\f059';
+  font-weight: 800;
+}
+
+header > buttons button[active]:after {
+  content: '\f00d' !important;
+  font-weight: 800 !important;
 }
 
 main > spin-all {
-    cursor: pointer;
+  cursor: pointer;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  user-select: none;
 }
 
 main > spin-all:hover {
-    background: #333;
+  background: #333;
 }
 
 team-wheel, personal-wheels {
-    flex: 1;
-    display: flex;
-    flex-direction: row;
+  flex: 1 1;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 team-wheel {
-    border-bottom: 2px solid #222;
+  border-bottom: 2px solid #222;
 }
 
 spinner-wheel {
-    display: block;
+  display: block;
 }
 
 spinner-panel {
-    flex: 1;
-    flex-direction: column;
-    justify-items: center;
-    display: flex;
+  flex: 1 1;
+  flex-direction: column;
+  justify-items: center;
+  display: flex;
+  min-height: 400px;
+  user-select: none;
 }
 
 spinner-panel input,
 spinner-panel h2 {
-    flex: 1;
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-    background: none;
-    border: 0;
-    margin: 0;
-    padding: .25em;
-    vertical-align: middle;
-    display: inline-block;
-    height: 100%;
+  flex: 1;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  background: none;
+  border: 0;
+  margin: 0;
+  padding: .25em;
+  vertical-align: middle;
+  display: inline-block;
+  height: 100%;
 }
 
 spinner-panel spinner-wheel {
-    flex: 6;
+  flex: 6;
 }
 
 spinner-panel rule {
-    flex: 3;
-    flex-grow: 0;
+  flex: 3;
+  flex-grow: 0;
 }
 
 spinner-panel h3 {
-    text-align: center;
+  text-align: center;
 }
 
 spinner-wheel {
-    margin: 0 auto;
+  margin: 0 auto;
 }
 
 spinner-wheel {
-    display: block;
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-    position: relative;
+  display: block;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
 }
 
 spinner-wheel canvas {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+
+item-sidebar li[less] span.quantity {
+  color: #960;
+}
+
+item-sidebar ul:not(.legend) li[under],
+item-sidebar ul.legend li[under] span.quantity {
+  text-decoration: line-through rgba(255, 255, 255, .5);
+}
+
+item-sidebar li[under] span.quantity {
+  color: #900;
+}
+
+item-sidebar ul:not(.legend) li[none],
+item-sidebar ul.legend li[none] span.quantity  {
+  text-decoration: line-through rgba(255, 255, 255, .5);
+  color: inherit;
+}
+
+rule-sidebar buttons {
+  display: flex;
+  flex-direction: row;
+  padding: 0 16px 16px;
+  gap: 8px;
+}
+
+rule-sidebar buttons button {
+  flex: 1;
+  padding: 8px;
+  cursor: pointer;
+  border: 0;
+  outline: 0;
+}
+
+rule-sidebar buttons button:hover {
+  background: #CCC;
 }
