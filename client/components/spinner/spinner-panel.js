@@ -62,7 +62,8 @@ class SpinnerPanel extends BaseElement {
   };
 
   handleHidePopup = event => {
-    if (![...this.querySelectorAll('popup, popup .popup-close')].includes(event.path[0])) return;
+    console.log(event.composedPath());
+    if (![...this.querySelectorAll('popup, popup .popup-close')].includes((event.path || event.composedPath())[0])) return;
 
     this.showPopup = false;
     document.body.classList.remove('hasPopup');
