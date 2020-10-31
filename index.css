@@ -345,6 +345,7 @@ spinner-panel h2 {
   vertical-align: middle;
   display: inline-block;
   height: 100%;
+  color: inherit;
 }
 
 spinner-panel spinner-wheel {
