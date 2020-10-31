@@ -47,12 +47,12 @@ class SpinnerWheel extends BaseElement {
     this.rules = [];
     this.rotation = 0.0;
 
-    this.initialAccelerationVariance = 3.0;
-    this.initialAcceleration = 10.0;
+    this.initialAccelerationVariance = Math.PI;
+    this.initialAcceleration = Math.PI * 3;
     this.acceleration = 0.0;
     this.velocity = 0.0;
-    this.accelerationDecay = 5.0;
-    this.velocityDecay = 1.0;
+    this.accelerationDecay = Math.PI;
+    this.velocityDecay = Math.PI / 4;
 
     const resizeObserver = new ResizeObserver(() => this.renderCanvas());
 
