@@ -221,8 +221,17 @@ class PhasmoWheel extends BaseElement {
     this.activeTeamRules = this.teamRules.filter(({ active }) => active);
   };
 
-  updateUrl() {
-    const { personalRules, teamRules, currentTeamRule, currentPersonalRules, names } = this;
+  updateUrl = () => {
+    const { personalRules, teamRules, currentTeamRule, currentPersonalRules, names, lastUpdate } = this;
+    const now = Date.now();
+
+    // Throttle to one update per second
+    if (now - lastUpdate < 1000) {
+      setTimeout(this.updateUrl, 1000 - (now - lastUpdate));
+      return;
+    }
+
+    this.lastUpdate = now;
 
     if (!teamRules || !personalRules || !currentTeamRule || !currentPersonalRules) return;
 
@@ -237,7 +246,7 @@ class PhasmoWheel extends BaseElement {
 
   parseUrl() {
     try {
-      const {personalRules, teamRules} = this;
+      const { personalRules, teamRules } = this;
 
       if (!personalRules || !teamRules || !document.location.hash) return;
 
