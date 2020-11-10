@@ -131,3 +131,28 @@
     strong: 0
   required:
     candle: 2
+- id: 20
+  name: Rat Race
+  summary: Set a timer for 5 minutes, adding 1 minute when the team completes an object or finds evidence
+  description: When the timer runs out, you must leave
+- id: 21
+  name: Yeet
+  summary: Yeet everything into the house, team cannot leave the house until everyone is ready to close the van door
+  description: Team is not allowed to look for orbs before closing the van door
+- id: 22
+  name: Back in my day
+  summary: Turn off the power, no battery powered items
+- id: 23
+  name: Catch me if you can
+  summary: Once you find the ghost room, you can only survive hunts by running away from the ghost
+- id: 24
+  name: You can't see me
+  summary: Once a hunt starts, you must turn off your flashlight, crounch, and look as far downwards as you can
+  description: You can only reach a hiding place by knowing where you are. You cannot look up until the hunt is over
+- id: 25
+  name: Full house
+  summary: Everyone gets two personal punishments and three team punishments
+  description: Double whammy will stack
+- id: 26
+  name: Vigilant
+  summary: No investigative items allowed, team must determine the ghost type by behavior alone

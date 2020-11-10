@@ -116,3 +116,10 @@
     Sinks, TVs, radios, lights, etc.
 
     Make sure you keep the breaker on at all times so be careful.
+- id: 21
+  name: Moonwalker
+  summary: You must walk backwards at all times
+- id: 22
+  name: The Chosen One
+  summary: You get no personal punishment; all punishments are void
+  description: You must handpick team an dpersonal punishments for team
