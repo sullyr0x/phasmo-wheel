@@ -35,7 +35,7 @@
   summary: You must get a picture of the ghost before you can leave the house!
 - id: 7
   name: Stalker
-  summary: You must get a picture of the ghost before you can leave the house!
+  summary: You must remain in the ghost room until you have all your evidence. If a hunt starts you are allowed to leave the room to hide you must return once the hunt is over
 - id: 8
   name: This is my house now
   summary: You must remain in the house until you have all your evidence!
@@ -122,4 +122,23 @@
 - id: 22
   name: The Chosen One
   summary: You get no personal punishment; all punishments are void
-  description: You must handpick team an dpersonal punishments for team
+  description: You must handpick team and personal punishments for team
+- id: 23 
+  name: Hello my name is 
+  summary: You are the only one who can speak to the ghost
+  description: |
+    You must use it first and last name when speaking with the ghost
+- id: 24 
+  name: Photo boomer 
+  summary: You must have a teammate take a photo of you with the ghost
+  description: |
+    You must be clearly in the photo and it needs to be confirmed as a ghost in the book 
+- id: 25 
+  name: Uninsured 
+  summary: You must bring all the equipment that was brought into the house back to the van
+- id: 26 
+  name: Flexing
+  summary: You must add all the equipment 
+  description: |
+    You are not allowed to leave the house until you have all the evidence
+    If the ghost hunts you must find a table, counter or car etc. to run the ghost around and do not close the doors
