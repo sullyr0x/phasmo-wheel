@@ -26,7 +26,10 @@
     head-camera: 0
 - id: 2
   name: Over and Out
-  summary: No radio chat, local only!
+  summary: Everyone must use global chat only pick a code name and use proper radio protocol
+  description: |
+       Example “Eagle 1, this is Eagle 2, over.” “Eagle 2, this is Eagle 1, go ahead over”
+       use radio language like (Go ahead, Say again, Stand by, Roger, Affirmative, Negative, and Over and out)
 - id: 3
   name: I don't have a problem
   summary: No pills!
@@ -119,12 +122,12 @@
   name: Tag Team
   summary: Teams of 2, only one person from each team in the house at a time
   description: |
-    You are allowed to bring a candle and one other item, no flashlight
-    The team that finds evidence, completes an objective or finds a ghost room using the item they brough in gets a point
-    A confirmed photo is worth 2 points
+    You are allowed to bring a candle and one other item, no flashlight, salt, pills, UV light or crucifix 
+    The team that finds evidence, completes an objective or finds a ghost room using the item they brough in gets the points
+    1 pt Confirmed photo, 2 pt Evidence with your item, 3 pt Confirming ghost room with your item, 4 pt Crossing off objective with your item
     Complete 6 rounds, 2 minutes each round
     If you don't get all the evidence, you must guess
-    Guessing the ghost correctly is worth 3 points
+    Guessing the ghost correctly is worth 5 points
     The members of the team with the least number of points each receive an extra personal punishment
   restrict:
     basic: 0
@@ -138,7 +141,7 @@
 - id: 21
   name: Yeet
   summary: Yeet everything into the house, team cannot leave the house until everyone is ready to close the van door
-  description: Team is not allowed to look for orbs before closing the van door
+  description: Team is allowed to look for orbs before closing the van door
 - id: 22
   name: Back in my day
   summary: Turn off the power, no battery powered items
@@ -156,3 +159,27 @@
 - id: 26
   name: Vigilant
   summary: No investigative items allowed, team must determine the ghost type by behavior alone
+  - id: 27  
+  name: Last man standing
+  summary: Nobody can leave the house until 3 players are dead 
+  description: |
+    Every player must add an equal amount of equipment.
+    When a  ghost hunt starts everyone must freeze no closing doors
+    Last man standing can leave the house and they become The Chosen one next round
+  - id: 28 
+  name: Blue light special
+  summary: Everyone adds one item; that item is what you are allowed to bring into the house no flashlights
+  - id: 29 
+  name: Seeing is believing
+  summary: All players must see the ghost at least once before leaving the house
+  - id: 30 
+  name: Don’t drop the soap 
+  summary: Find the showers and a bar of soap every time the ghost hunts go into a shower stall bend over and drop the soap
+  description: |
+    do not close the door
+    map must be changed to prison
+    - id: 31 
+  name: We got a jizob
+  summary: Complete all objectives (yes even dirty water), get a photo in each category
+  description: |
+    failing to get $300 team get an extra punishment next round
